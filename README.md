@@ -115,4 +115,4 @@ const links = await client.bulkLinks([
 
 ## Maintainers
 
-[Samuel Nkoom Amoah](https://github.com/snamoah)
+[Samuel Amoah](https://github.com/snamoah)
