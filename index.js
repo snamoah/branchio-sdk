@@ -46,8 +46,6 @@ const branch = ({
           data: linksData,
           url: `/url/bulk/${branchKey || appId}`
         })
-
-        console.log('===> data', data)
         return data
       } catch (error) {
         console.log(error.response.data)

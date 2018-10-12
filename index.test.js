@@ -7,14 +7,13 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-const DEMO_KEY = 'key_live_iiVdjoUF3dvzx77A00XJhnohrAdlIz9p'
-const APP_ID = '579211172016836764'
+const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
 
 describe('Branch Sdk', () => {
   let client
 
   before(() => {
-    client = branch({ appId: APP_ID })
+    client = branch({ branchKey: DEMO_KEY })
   })
 
   it('should throw an error if neither appId or branchKey is passed', () => {
@@ -89,14 +88,25 @@ describe('Branch Sdk', () => {
           }
         }
       ]
+
+      nock('https://api.branch.io')
+        .post(`/v1/url/bulk/${DEMO_KEY}`, linksData)
+        .reply(200, [
+          { url: 'https:/example.app.link/erTweDt' },
+          { url: 'https://example.app.link/xUrsD0P' }
+        ])
     })
 
     it('should return a function', () => {
       expect(client.bulkLinks).to.be.a('Function')
     })
 
-    it.only('should create a deep link', () => {
-      return expect(client.bulkLinks(linksData)).to.eventually.eql({ url: 'https://example.app.link/xwIqrtYopcvbNzXc' })
+    it('should create a deep link', () => {
+      const expectedLinks = [
+        { url: 'https:/example.app.link/erTweDt' },
+        { url: 'https://example.app.link/xUrsD0P' }
+      ]
+      return expect(client.bulkLinks(linksData)).to.eventually.eql(expectedLinks)
     })
   })
 })

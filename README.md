@@ -63,3 +63,39 @@ const { url } = await client.link({
 })
 //=> https://example.app.link/0AjuiLcpqF
 ```
+
+### bulkLinks()
+
+This method allows you to create multiple deep links at a go. See [docs](https://branchmetrics.github.io/docs/pages/apps/api/#link-create-bulk)
+
+```javascript
+const links = await client.bulkLinks([
+  {
+    stage: 'new user',
+    channel: 'facebook',
+    feature: 'dashboard',
+    campaign: 'content 123',
+    tags: [ 'tag1', 'tag2', 'tag3' ],
+    data: {
+      'custom_bool': true,
+      '$og_title': 'Title',
+      '$og_description': 'Description',
+      '$og_image_url': 'https://lorempixel.com/400/400'
+    }
+  },
+  {
+    stage: 'new user',
+    channel: 'facebook',
+    feature: 'dashboard',
+    campaign: 'content 123',
+    tags: [ 'tag1', 'tag2', 'tag3' ],
+    data: {
+      'custom_bool': true,
+      '$og_title': 'Title',
+      '$og_description': 'Description',
+      '$og_image_url': 'https://lorempixel.com/400/400'
+    }
+  }
+])
+// => [{ url: 'https://example.app.link/xUrsD0P' }, { url: 'https:/example.app.link/erTweDt' }]
+```
