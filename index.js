@@ -16,20 +16,27 @@ const branch = ({
   }
 
   const credentials = {
-    api_id: appId,
+    app_id: appId,
     branch_key: branchKey
   }
 
   return {
-    link (linkData) {
-      return request({
-        url: '/url',
-        method: 'post',
-        body: {
-          ...credentials,
-          ...linkData,
-        }
-      })
+    async link (linkData) {
+      try {
+       const { data } = await request({
+         json: true,
+         url: '/url',
+         method: 'post',
+         data: {
+           ...linkData,
+           ...credentials,
+         }, 
+        })
+        return data
+      } catch (error) {
+        console.log(error.response.data)
+        throw error
+      }
     },
   }
 }
