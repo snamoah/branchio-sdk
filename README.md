@@ -1,4 +1,4 @@
-<img src="/logo.png" style="display: block; text-align: center"/>
+<p align="center"><img src="/logo.png" alt="Branch.io logo"/></p>
 
 This is an unofficial sdk for [branch.io](https://branch.io). See API reference for what you can do with branch [here](https://branchmetrics.github.io/docs/pages/apps/api/)
 
