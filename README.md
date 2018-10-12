@@ -99,3 +99,20 @@ const links = await client.bulkLinks([
 ])
 // => [{ url: 'https://example.app.link/xUrsD0P' }, { url: 'https:/example.app.link/erTweDt' }]
 ```
+
+## TODO:
+
+- [ ] Add method to read link
+- [ ] Add method to update link
+- [ ] Add method to update link tips
+- [ ] Add method to create events
+- [ ] Add method to create commerce events
+- [ ] Add method to read user
+- [ ] Add method to create referral link
+- [ ] Add method to create referral reward
+
+...
+
+## Maintainers
+
+[Samuel Nkoom Amoah](https://github.com/snamoah)
