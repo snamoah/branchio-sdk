@@ -7,14 +7,14 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-const DEMO_KEY = 'key_test_jfOnkcPx2jzFr49QopofGngetqbfVE1w'
-const APP_ID = '579211172058779805'
+const DEMO_KEY = 'key_live_iiVdjoUF3dvzx77A00XJhnohrAdlIz9p'
+const APP_ID = '579211172016836764'
 
 describe('Branch Sdk', () => {
   let client
 
   before(() => {
-    client = branch({ branchKey: DEMO_KEY })
+    client = branch({ appId: APP_ID })
   })
 
   it('should throw an error if neither appId or branchKey is passed', () => {
@@ -54,6 +54,49 @@ describe('Branch Sdk', () => {
 
     it('it should create a deep link', () => {
       return expect(client.link(linkData)).to.eventually.eql({ url: 'https://example.app.link/xwIqrtYopcvbNzXc' })
+    })
+  })
+
+  describe('bulkLinks()', () => {
+    let linksData
+
+    before(() => {
+      linksData = [
+        {
+          stage: 'new user',
+          channel: 'facebook',
+          feature: 'dashboard',
+          campaign: 'content 123',
+          tags: [ 'tag1', 'tag2', 'tag3' ],
+          data: {
+            'custom_bool': true,
+            '$og_title': 'Title',
+            '$og_description': 'Description',
+            '$og_image_url': 'https://lorempixel.com/400/400'
+          }
+        },
+        {
+          stage: 'new user',
+          channel: 'facebook',
+          feature: 'dashboard',
+          campaign: 'content 123',
+          tags: [ 'tag1', 'tag2', 'tag3' ],
+          data: {
+            'custom_bool': true,
+            '$og_title': 'Title',
+            '$og_description': 'Description',
+            '$og_image_url': 'https://lorempixel.com/400/400'
+          }
+        }
+      ]
+    })
+
+    it('should return a function', () => {
+      expect(client.bulkLinks).to.be.a('Function')
+    })
+
+    it.only('should create a deep link', () => {
+      return expect(client.bulkLinks(linksData)).to.eventually.eql({ url: 'https://example.app.link/xwIqrtYopcvbNzXc' })
     })
   })
 })

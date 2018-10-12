@@ -4,7 +4,7 @@
   "description": "The Unofficial Node SDK for branch.io",
   "main": "index.js",
   "scripts": {
-    "test": "mocha index.test.js"
+    "test": "mocha index.test.js --no-timeouts"
   },
   "repository": {
     "type": "git",

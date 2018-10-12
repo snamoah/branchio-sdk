@@ -34,10 +34,26 @@ const branch = ({
         })
         return data
       } catch (error) {
-        console.log(error.response.data)
         throw error
       }
     },
+
+    async bulkLinks (linksData) {
+      try {
+        const { data } = await request({
+          json: true,
+          method: 'post',
+          data: linksData,
+          url: `/url/bulk/${branchKey || appId}`
+        })
+
+        console.log('===> data', data)
+        return data
+      } catch (error) {
+        console.log(error.response.data)
+        throw error
+      }
+    }
   }
 }
 
