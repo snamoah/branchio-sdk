@@ -22,12 +22,12 @@
   },
   "homepage": "https://github.com/snamoah/branchio-sdk#readme",
   "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
+    "chai": "4.2.0",
+    "chai-as-promised": "7.1.1",
     "mocha": "5.2.0",
-    "nock": "^10.0.1"
+    "nock": "10.0.1"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "0.18.0"
   }
 }
