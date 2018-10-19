@@ -7,8 +7,7 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-// const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
-const DEMO_KEY = 'key_test_jfOnkcPx2jzFr49QopofGngetqbfVE1w'
+const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
 
 describe('Branch Sdk', () => {
   let client
