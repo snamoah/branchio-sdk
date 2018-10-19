@@ -1,9 +1,11 @@
 'use strict'
 
 const axios = require('axios')
+const { required } = require('./utils')
 
 const request = axios.create({
-  baseURL: 'https://api.branch.io/v1'
+  json: true,
+  baseURL: 'https://api.branch.io/v1/url'
 })
 
 const branch = ({
@@ -22,35 +24,33 @@ const branch = ({
 
   return {
     async link (linkData) {
-      try {
-       const { data } = await request({
-         json: true,
-         url: '/url',
-         method: 'post',
-         data: {
-           ...linkData,
-           ...credentials,
-         }, 
-        })
-        return data
-      } catch (error) {
-        throw error
-      }
+      const { data } = await request({
+        method: 'post',
+        data: {
+          ...linkData,
+          ...credentials,
+        }, 
+      })
+      return data
     },
 
     async bulkLinks (linksData) {
-      try {
-        const { data } = await request({
-          json: true,
-          method: 'post',
-          data: linksData,
-          url: `/url/bulk/${branchKey || appId}`
-        })
-        return data
-      } catch (error) {
-        console.log(error.response.data)
-        throw error
-      }
+      const { data } = await request({
+        method: 'post',
+        data: linksData,
+        url: `/bulk/${branchKey || appId}`
+      })
+      return data
+    },
+
+    async readLink (deepLink = required('deepLink')) {
+      const { data } = await request({
+        params: { 
+          url: deepLink,
+          ...credentials
+        }
+      })
+      return data
     }
   }
 }

@@ -7,7 +7,8 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
+// const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
+const DEMO_KEY = 'key_test_jfOnkcPx2jzFr49QopofGngetqbfVE1w'
 
 describe('Branch Sdk', () => {
   let client
@@ -107,6 +108,69 @@ describe('Branch Sdk', () => {
         { url: 'https://example.app.link/xUrsD0P' }
       ]
       return expect(client.bulkLinks(linksData)).to.eventually.eql(expectedLinks)
+    })
+  })
+
+  describe('readLink()', () => {
+    let linkData
+    let deepLink
+    let response = {
+      campaign: 'content 123',
+      channel: 'facebook',
+      data: {
+        'custom_bool': true,
+        '$og_title': 'Title',
+        '~stage': 'new user',
+        '~channel': 'facebook',
+        '~creation-source': 0,
+        '~feature': 'dashboard',
+        '~campaign': 'content 123',
+        '~id': '579310626678425622',
+        '$og_description': 'Description',
+        '~tags': [ 'tag1', 'tag2', 'tag3' ],
+        '$og_image_url': 'https://lorempixel.com/400/400',
+      }
+    }
+
+    before(async () => {
+      linkData = {
+        alias: '',
+        stage: 'new user',
+        channel: 'facebook',
+        feature: 'dashboard',
+        campaign: 'content 123',
+        tags: [ 'tag1', 'tag2', 'tag3' ],
+        data: {
+          'custom_bool': true,
+          '$og_title': 'Title',
+          '$og_description': 'Description',
+          '$og_image_url': 'https://lorempixel.com/400/400'
+        }
+      }
+
+      nock('https://api.branch.io')
+        .post('/v1/url', {
+          ...linkData,
+          branch_key: DEMO_KEY
+        })
+        .reply(200, { url: 'https://example.app.link/xwIqrtYopcvbNzXc' })
+
+
+      const { url } = await client.link(linkData)
+      deepLink = url
+    })
+
+    it('should throw if no link is passed as paramter', () => {
+      return expect(client.readLink()).to.be.rejectedWith('Parameter deepLink is required')
+    })
+
+    it('should return details of deep link initially created', () => {
+      nock('https://api.branch.io')
+        .get('/v1/url')
+        .query({ url: deepLink, branch_key: DEMO_KEY })
+        .reply(200, response)
+
+      return expect(client.readLink(deepLink)).to.eventually.eql(response)
     })
   })
 })
