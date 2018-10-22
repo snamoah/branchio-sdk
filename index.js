@@ -9,17 +9,19 @@ const request = axios.create({
 })
 
 const branch = ({
+  key,
   appId,
-  branchKey
+  secret
 }) => {
 
-  if (!appId && !branchKey) {
+  if (!appId && !key) {
     throw new Error('Initialize branch sdk with either appId or branchKey')
   }
 
   const credentials = {
     app_id: appId,
-    branch_key: branchKey
+    branch_key: key,
+    branch_secret: secret
   }
 
   return {
@@ -28,7 +30,8 @@ const branch = ({
         method: 'post',
         data: {
           ...linkData,
-          ...credentials,
+          app_id: appId,
+          branch_key: key
         }, 
       })
       return data
@@ -38,7 +41,7 @@ const branch = ({
       const { data } = await request({
         method: 'post',
         data: linksData,
-        url: `/bulk/${branchKey || appId}`
+        url: `/bulk/${key || appId}`
       })
       return data
     },
@@ -47,10 +50,29 @@ const branch = ({
       const { data } = await request({
         params: { 
           url: deepLink,
-          ...credentials
+          app_id: appId,
+          branch_key: key
         }
       })
       return data
+    },
+
+    async updateLink ({ 
+      data = required('data'),
+      deepLink = required('deepLink')
+    }) {
+      const { data: response } = await request({
+        method: 'put',
+        data: {
+          ...data,
+          ...credentials
+        },
+        params: {
+          url: deepLink
+        },
+      })
+
+      return response
     }
   }
 }
