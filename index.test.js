@@ -8,12 +8,13 @@ const chaiAsPromised = require('chai-as-promised')
 use(chaiAsPromised)
 
 const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
+const DEMO_SECRET = 'secret_live_fEGvATpzGnG2zHbta5WQKkZngxJCls0q'
 
 describe('Branch Sdk', () => {
   let client
 
   before(() => {
-    client = branch({ branchKey: DEMO_KEY })
+    client = branch({ key: DEMO_KEY, secret: DEMO_SECRET })
   })
 
   it('should throw an error if neither appId or branchKey is passed', () => {
@@ -170,6 +171,61 @@ describe('Branch Sdk', () => {
         .reply(200, response)
 
       return expect(client.readLink(deepLink)).to.eventually.eql(response)
+    })
+  })
+
+  describe('updateLink()', () => {
+    let linkData
+    let deepLink = 'https://example.app.link/ggxaqsx1dR'
+
+    const response = {
+      type: 2,
+      channel: 'twitter',
+      feature: 'marketing',
+      data: {
+        name: 'John',
+        'url': deepLink,
+        '+url': deepLink,
+        '~marketing': true,
+        user_id: '2481084010',
+        '~channel': 'twitter',
+        '~creation_source': 0,
+        '$one_time_use': false,
+        '~feature': 'marketing',
+        '~id': '582937710512536022'
+      }
+    }
+
+    before(async () => {
+      linkData = {
+        channel: 'twitter',
+        data: {
+          name: 'John',
+          user_id: 2481084010
+        }
+      }
+
+      nock('https://api.branch.io')
+        .put('/v1/url', {
+          ...linkData,
+          branch_key: DEMO_KEY,
+          branch_secret: DEMO_SECRET
+        })
+        .query({ url: deepLink })
+        .reply(200, response)
+    })
+
+    it('should throw error if deepLink is not passed as parameter', () => {
+      return expect(client.updateLink({ data: linkData })).to.be.rejectedWith('deepLink is required')
+    })
+
+    it('should throw error data is not passed as parameter', () => {
+      return expect(client.updateLink({ deepLink })).to.be.rejectedWith('data is required')
+    })
+
+
+    it('should return updated link details', () => {
+      return expect(client.updateLink({ data: linkData, deepLink })).to.eventually.eql(response)
     })
   })
 })

@@ -19,7 +19,8 @@ const branchio = require('branchio-sdk')
 
 const client = branchio({ 
   appId: <APP_ID>,
-  branchKey: <BRANCH_IO_KEY>  // initialize branchio with either branch key or appId but not both
+  key: <BRANCH_IO_KEY>  // initialize branchio with either appId or branch key and branch secret but not both
+  secret: <BRANCH_IO_SECRET>
 })
 
 const { url } = await client.link({ 
@@ -109,10 +110,31 @@ const linkData = await client.readLink('https://example.app.link/0AjuiLcpqF')
 //=> link data
 ```
 
+### updateLink()
+
+This method is for updating details of a deep link
+
+```javascript
+const client = branch({ key: '<BRANCH_IO_KEY', secret: '<BRANCH_IO_SECRET' })
+
+const updateData = await client.updateLink({ 
+  deepLink: 'https://example.app.link/ggxaqsx1dR',
+  data: {
+    channel: 'twitter',
+    data: {
+      name: 'John',
+      user_id: 2481084010
+    }
+  }
+ })
+
+//=> link data
+```
+
 ## TODO:
 
 - [x] Add method to read link
-- [ ] Add method to update link
+- [x] Add method to update link
 - [ ] Add method to update link tips
 - [ ] Add method to create events
 - [ ] Add method to create commerce events
