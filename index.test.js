@@ -7,16 +7,14 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-// const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
-const DEMO_KEY = 'key_live_iiVdjoUF3dvzx77A00XJhnohrAdlIz9p'
-const DEMO_SECRET = 'secret_live_fEGvATpzGnG2zHbta5WQKkZngxJCls0m'
+const DEMO_KEY = 'key_live_ihVdjoBF3dvzx77A00XJhnohrAdlIz9i'
+const DEMO_SECRET = 'secret_live_fEGvATpzGnG2zHbta5WQKkZngxJCls0q'
 
 describe('Branch Sdk', () => {
   let client
 
   before(() => {
     client = branch({ key: DEMO_KEY, secret: DEMO_SECRET })
-    // client = branch({ appId: '579211172016836764' })
   })
 
   it('should throw an error if neither appId or branchKey is passed', () => {
@@ -178,7 +176,7 @@ describe('Branch Sdk', () => {
 
   describe('updateLink()', () => {
     let linkData
-    let deepLink = 'https://ja5d.app.link/ggxaqsx1dR'
+    let deepLink = 'https://example.app.link/ggxaqsx1dR'
 
     const response = {
       type: 2,
