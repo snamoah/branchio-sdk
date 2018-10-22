@@ -101,9 +101,18 @@ const links = await client.bulkLinks([
 // => [{ url: 'https://example.app.link/xUrsD0P' }, { url: 'https:/example.app.link/erTweDt' }]
 ```
 
+### readLink()
+
+This method is for reading details of a deep link. See corresponding docs [here](https://branchmetrics.github.io/docs/pages/apps/api/#link-read)
+
+```javascript
+const linkData = await client.readLink('https://example.app.link/0AjuiLcpqF')
+//=> link data
+```
+
 ## TODO:
 
-- [ ] Add method to read link
+- [x] Add method to read link
 - [ ] Add method to update link
 - [ ] Add method to update link tips
 - [ ] Add method to create events
