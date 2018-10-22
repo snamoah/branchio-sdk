@@ -19,7 +19,8 @@ const branchio = require('branchio-sdk')
 
 const client = branchio({ 
   appId: <APP_ID>,
-  branchKey: <BRANCH_IO_KEY>  // initialize branchio with either branch key or appId but not both
+  key: <BRANCH_IO_KEY>  // initialize branchio with either appId or branch key and branch secret but not both
+  secret: <BRANCH_IO_SECRET>
 })
 
 const { url } = await client.link({ 
