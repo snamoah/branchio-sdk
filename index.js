@@ -5,15 +5,10 @@ const { required } = require('./utils')
 
 const request = axios.create({
   json: true,
-  baseURL: 'https://api.branch.io/v1/url'
+  baseURL: 'https://api.branch.io/v1'
 })
 
-const branch = ({
-  key,
-  appId,
-  secret
-}) => {
-
+const branch = ({ key, appId, secret }) => {
   if (!appId && !key) {
     throw new Error('Initialize branch sdk with either appId or branchKey')
   }
@@ -25,30 +20,32 @@ const branch = ({
   }
 
   return {
-    async link (linkData) {
+    async link(linkData) {
       const { data } = await request({
+        url: '/url',
         method: 'post',
         data: {
           ...linkData,
           app_id: appId,
           branch_key: key
-        }, 
+        }
       })
       return data
     },
 
-    async bulkLinks (linksData) {
+    async bulkLinks(linksData) {
       const { data } = await request({
         method: 'post',
         data: linksData,
-        url: `/bulk/${key || appId}`
+        url: `url/bulk/${key || appId}`
       })
       return data
     },
 
-    async readLink (deepLink = required('deepLink')) {
+    async readLink(deepLink = required('deepLink')) {
       const { data } = await request({
-        params: { 
+        url: '/url',
+        params: {
           url: deepLink,
           app_id: appId,
           branch_key: key
@@ -57,11 +54,12 @@ const branch = ({
       return data
     },
 
-    async updateLink ({ 
+    async updateLink({
       data = required('data'),
       deepLink = required('deepLink')
     }) {
       const { data: response } = await request({
+        url: '/url',
         method: 'put',
         data: {
           ...data,
@@ -69,7 +67,47 @@ const branch = ({
         },
         params: {
           url: deepLink
-        },
+        }
+      })
+
+      return response
+    },
+
+    async createReferralRule(ruleDetails = {}) {
+      const { data: response } = await request({
+        url: '/eventresponse',
+        method: 'post',
+        data: {
+          ...ruleDetails,
+          ...credentials
+        }
+      })
+      return response
+    },
+
+    async redeem({ identity, amount, bucket }) {
+      const { data: response } = await request({
+        url: '/redeem',
+        method: 'post',
+        data: {
+          amount,
+          bucket,
+          identity,
+          ...credentials
+        }
+      })
+
+      return response
+    },
+
+    async credits({ identity }) {
+      const { data: response } = await request({
+        url: '/credits',
+        method: 'get',
+        params: {
+          identity,
+          ...credentials
+        }
       })
 
       return response
