@@ -5,7 +5,7 @@ const { required } = require('./utils')
 
 const request = axios.create({
   json: true,
-  baseURL: 'https://api.branch.io/v1'
+  baseURL: 'https://api2.branch.io/v1',
 })
 
 const branch = ({ key, appId, secret }) => {
@@ -16,7 +16,7 @@ const branch = ({ key, appId, secret }) => {
   const credentials = {
     app_id: appId,
     branch_key: key,
-    branch_secret: secret
+    branch_secret: secret,
   }
 
   return {
@@ -27,8 +27,8 @@ const branch = ({ key, appId, secret }) => {
         data: {
           ...linkData,
           app_id: appId,
-          branch_key: key
-        }
+          branch_key: key,
+        },
       })
       return data
     },
@@ -37,7 +37,7 @@ const branch = ({ key, appId, secret }) => {
       const { data } = await request({
         method: 'post',
         data: linksData,
-        url: `url/bulk/${key || appId}`
+        url: `url/bulk/${key || appId}`,
       })
       return data
     },
@@ -48,26 +48,26 @@ const branch = ({ key, appId, secret }) => {
         params: {
           url: deepLink,
           app_id: appId,
-          branch_key: key
-        }
+          branch_key: key,
+        },
       })
       return data
     },
 
     async updateLink({
       data = required('data'),
-      deepLink = required('deepLink')
+      deepLink = required('deepLink'),
     }) {
       const { data: response } = await request({
         url: '/url',
         method: 'put',
         data: {
           ...data,
-          ...credentials
+          ...credentials,
         },
         params: {
-          url: deepLink
-        }
+          url: deepLink,
+        },
       })
 
       return response
@@ -79,8 +79,8 @@ const branch = ({ key, appId, secret }) => {
         method: 'post',
         data: {
           ...ruleDetails,
-          ...credentials
-        }
+          ...credentials,
+        },
       })
       return response
     },
@@ -93,8 +93,8 @@ const branch = ({ key, appId, secret }) => {
           amount,
           bucket,
           identity,
-          ...credentials
-        }
+          ...credentials,
+        },
       })
 
       return response
@@ -106,12 +106,12 @@ const branch = ({ key, appId, secret }) => {
         method: 'get',
         params: {
           identity,
-          ...credentials
-        }
+          ...credentials,
+        },
       })
 
       return response
-    }
+    },
   }
 }
 
